@@ -50,9 +50,6 @@ import numpy as np
 
 
 
-
-
-
 def exit_need_adjustment(err_info):
   #
   print('''
@@ -66,9 +63,6 @@ def exit_need_adjustment(err_info):
   ***
   ''')
   sys.exit()
-
-
-
 
 
 
@@ -139,9 +133,6 @@ def crosscorfit(data_template,data_to_be_shifted,corrboxpeak,corrboxfit):
 
 
 
-
-
-
 def apply_shift(data_to_be_shifted,dx,dy,bkgd):
   #
   dxi,dyi = round(dx),round(dy)
@@ -166,9 +157,6 @@ def apply_shift(data_to_be_shifted,dx,dy,bkgd):
   data_to_be_shifted_new[y1new:y2new,x1new:x2new] = data_to_be_shifted[y1old:y2old,x1old:x2old]
   #
   return data_to_be_shifted_new
-
-
-
 
 
 
