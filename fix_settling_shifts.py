@@ -120,8 +120,8 @@ def crosscorfit(data_template,data_to_be_shifted,corrboxpeak,corrboxfit):
   #
   amplfit = gfit_results2.amplitude.value
   thetafit = gfit_results2.theta.value
-  xfit,yfit = gfit_results2.x_mean.value,gfit_results.y_mean.value
-  xsigma,ysigma = gfit_results2.x_stddev.value,gfit_results.y_stddev.value
+  xfit,yfit = gfit_results2.x_mean.value,gfit_results2.y_mean.value
+  xsigma,ysigma = gfit_results2.x_stddev.value,gfit_results2.y_stddev.value
   dx,dy = xfit-corrboxfit2,yfit-corrboxfit2
   #
   print('fit2  results:  %s  %3i %3i %5i %5i %8.3f %8.3f %8.3f %8.3f %14.1f %14.1f %8.3f %8.3f %8.3f' % (uncalfile,ni+1,ng+1,x0fit,y0fit,xfit,yfit,dx,dy,ampl,amplfit,thetafit,xsigma,ysigma))
