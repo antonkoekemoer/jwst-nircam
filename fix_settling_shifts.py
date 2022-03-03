@@ -53,11 +53,14 @@ import numpy as np
 
 
 
-def exit_need_adjustment():
+def exit_need_adjustment(err_info):
   #
   print('''
   ***
   *** ERROR - The code has encountered potentially problematic results, and is therefore exiting.
+  ***''')
+  print('  *** Error info is:  ',err_info)
+  print('''
   ***
   *** Please contact the author (Anton Koekemoer) to discuss how to run it on this dataset.
   ***
@@ -94,10 +97,10 @@ def crosscorfit(data_template,data_to_be_shifted,corrboxpeak,corrboxfit):
   #
   x0fit,y0fit = x0-x1,y0-y1
   #
+  y_array_2d,x_array_2d = np.mgrid[:corrboxfit,:corrboxfit]
+  #
   gfit_init = models.Gaussian2D(amplitude=ampl,x_mean=x0fit,y_mean=y0fit,x_stddev=x_stddev0,y_stddev=y_stddev0,theta=0.)
   gfit_init.theta.fixed = True
-  #
-  y_array_2d,x_array_2d = np.mgrid[:corrboxfit,:corrboxfit]
   #
   gfit_model   = fitting.LevMarLSQFitter()
   gfit_results = gfit_model(gfit_init,x_array_2d,y_array_2d,corr_fit)
@@ -106,13 +109,31 @@ def crosscorfit(data_template,data_to_be_shifted,corrboxpeak,corrboxfit):
   thetafit = gfit_results.theta.value
   xfit,yfit = gfit_results.x_mean.value,gfit_results.y_mean.value
   xsigma,ysigma = gfit_results.x_stddev.value,gfit_results.y_stddev.value
-  #
   dx,dy = xfit-corrboxfit2,yfit-corrboxfit2
   #
-  print('fit results:    %s  %3i %3i %5i %5i %8.3f %8.3f %8.3f %8.3f %14.1f %14.1f %8.3f %8.3f %8.3f' % (uncalfile,ni+1,ng+1,x0fit,y0fit,xfit,yfit,dx,dy,ampl,amplfit,thetafit,xsigma,ysigma))
+  print('fit1  results:  %s  %3i %3i %5i %5i %8.3f %8.3f %8.3f %8.3f %14.1f %14.1f %8.3f %8.3f %8.3f' % (uncalfile,ni+1,ng+1,x0fit,y0fit,xfit,yfit,dx,dy,ampl,amplfit,thetafit,xsigma,ysigma))
   #
-  if ((xpeak in [0,corrboxpeak]) or (ypeak in [0,corrboxpeak])): exit_need_adjustment()
-  if ((xsigma > box2) or (ysigma > box2)): exit_need_adjustment()
+  #
+  sigma_new = np.min([xsigma,ysigma])
+  #
+  gfit_init2 = models.Gaussian2D(amplitude=ampl,x_mean=x0fit,y_mean=y0fit,x_stddev=sigma_new,y_stddev=sigma_new,theta=0.)
+  gfit_init2.x_stddev.fixed = True
+  gfit_init2.y_stddev.fixed = True
+  gfit_init2.theta.fixed = True
+  #
+  gfit_model2   = fitting.LevMarLSQFitter()
+  gfit_results2 = gfit_model2(gfit_init2,x_array_2d,y_array_2d,corr_fit)
+  #
+  amplfit = gfit_results2.amplitude.value
+  thetafit = gfit_results2.theta.value
+  xfit,yfit = gfit_results2.x_mean.value,gfit_results.y_mean.value
+  xsigma,ysigma = gfit_results2.x_stddev.value,gfit_results.y_stddev.value
+  dx,dy = xfit-corrboxfit2,yfit-corrboxfit2
+  #
+  print('fit2  results:  %s  %3i %3i %5i %5i %8.3f %8.3f %8.3f %8.3f %14.1f %14.1f %8.3f %8.3f %8.3f' % (uncalfile,ni+1,ng+1,x0fit,y0fit,xfit,yfit,dx,dy,ampl,amplfit,thetafit,xsigma,ysigma))
+  #
+  if ((xpeak in [0,corrboxpeak]) or (ypeak in [0,corrboxpeak])): exit_need_adjustment('xpeak, ypeak = '+repr(xpeak)+', '+repr(ypeak)+';  corrboxpeak = '+repr(corrboxpeak))
+  if ((xsigma > box2) or (ysigma > box2)): exit_need_adjustment('xsigma, ysigma = '+repr(xsigma)+', '+repr(ysigma)+';  box2 = '+repr(box2))
   #
   return dx,dy
 
