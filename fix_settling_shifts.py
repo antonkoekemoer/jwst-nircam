@@ -60,7 +60,7 @@ def exit_need_adjustment(err_info):
   *** ERROR - The code has encountered potentially problematic results, and is therefore exiting.
   ***''')
   print('  *** Error info is:  ',err_info)
-  print('''
+  print('''  ***
   ***
   *** Please contact the author (Anton Koekemoer) to discuss how to run it on this dataset.
   ***
