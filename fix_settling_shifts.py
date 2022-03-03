@@ -79,7 +79,7 @@ def crosscorfit(data_template,data_to_be_shifted,corrboxpeak,corrboxfit):
   #
   ypeak,xpeak = np.unravel_index(np.argmax(corr[ycen-box2:ycen+box2,xcen-box2:xcen+box2]),(corrboxpeak,corrboxpeak))
   #
-#  if ((xpeak in [0,corrboxpeak]) or (ypeak in [0,corrboxpeak])): exit_need_adjustment()
+  if ((xpeak in [0,corrboxpeak]) or (ypeak in [0,corrboxpeak])): exit_need_adjustment()
   #
   x0,y0 = xcen-box2+xpeak,ycen-box2+ypeak
   #
@@ -109,7 +109,7 @@ def crosscorfit(data_template,data_to_be_shifted,corrboxpeak,corrboxfit):
   xfit,yfit = gfit_results.x_mean.value,gfit_results.y_mean.value
   xsigma,ysigma = gfit_results.x_stddev.value,gfit_results.y_stddev.value
   #
-#  if ((xsigma > box2) or (ysigma > box2)): exit_need_adjustment()
+  if ((xsigma > box2) or (ysigma > box2)): exit_need_adjustment()
   #
   dx,dy = xfit-corrboxfit2,yfit-corrboxfit2
   #
