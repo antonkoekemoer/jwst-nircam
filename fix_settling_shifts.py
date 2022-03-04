@@ -50,22 +50,6 @@ import numpy as np
 
 
 
-def exit_need_adjustment(err_info):
-  #
-  print('''
-  ***
-  *** ERROR - The code has encountered potentially problematic results, and is therefore exiting.
-  ***''')
-  print('  *** Error info is:  ',err_info)
-  print('''  ***
-  ***
-  *** Please contact the author (Anton Koekemoer) to discuss how to run it on this dataset.
-  ***
-  ''')
-  sys.exit()
-
-
-
 def crosscorfit(data_template,data_to_be_shifted,corrboxpeak,corrboxfit):
   #
   corr = scipy.signal.fftconvolve(data_template,data_to_be_shifted[::-1,::-1],mode='same')
@@ -157,6 +141,22 @@ def apply_shift(data_to_be_shifted,dx,dy,bkgd):
   data_to_be_shifted_new[y1new:y2new,x1new:x2new] = data_to_be_shifted[y1old:y2old,x1old:x2old]
   #
   return data_to_be_shifted_new
+
+
+
+def exit_need_adjustment(err_info):
+  #
+  print('''
+  ***
+  *** ERROR - The code has encountered potentially problematic results, and is therefore exiting.
+  ***''')
+  print('  *** Error info is:  ',err_info)
+  print('''  ***
+  ***
+  *** Please contact the author (Anton Koekemoer) to discuss how to run it on this dataset.
+  ***
+  ''')
+  sys.exit()
 
 
 
